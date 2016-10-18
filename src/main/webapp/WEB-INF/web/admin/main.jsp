@@ -9,10 +9,10 @@
 <title>E-Commerce Plaform</title>
 <link href="${ctx}/admin/css/default.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" type="text/css"
-	href="j${ctx}/admin/s/themes/default/easyui.css" />
+	href="${ctx}/admin/js/themes/default/easyui.css" />
 <link rel="stylesheet" type="text/css" href="${ctx}/admin/js/themes/icon.css" />
 <script type="text/javascript" src="${ctx}/admin/js/jquery-1.4.2.min.js"></script>
-<script type="text/javascript" src="${ctx}/admin/js/jquery.easyui.js"></script>
+<script type="text/javascript" src="${ctx}/admin/js/jQuery.easyui.js"></script>
 
 <script type="text/javascript" src='${ctx}/admin/js/outlook2.js'>
 	

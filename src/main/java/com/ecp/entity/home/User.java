@@ -1,10 +1,9 @@
-package com.ecp.entity.admin;
+package com.ecp.entity.home;
 
 import java.io.Serializable;
 
-public class Admin implements Serializable {
-	private static final long serialVersionUID = 6281177268086111001L;
-	
+public class User implements Serializable {
+	private static final long serialVersionUID = 2752328427173927219L;
 	private Integer id;
 	private String name;
 	private String password;
@@ -35,7 +34,7 @@ public class Admin implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Admin [id=" + id + ", name=" + name + ", password=" + password + "]";
+		return "User [id=" + id + ", name=" + name + ", password=" + password + "]";
 	}
 
 }

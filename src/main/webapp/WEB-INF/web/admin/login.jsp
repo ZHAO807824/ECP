@@ -34,17 +34,17 @@ canvas {
 			lineColor : '#5cbdaa'
 		});
 
-		//测试提交，对接程序删除即可
 		$(".submit_btn").click(function() {
 			var name = $("#name").val();
 			var password = $("#password").val();
 			var url = "${ctx}/admin/login";
 			var user={"name":name,"password":password};
 			$.post(url, user, function(data) {
-				if(data=="true"){
+				var result= eval("("+data+")");
+				if(result.success==true){
 					window.location.href="${ctx}/admin/main";
 				}else{
-					alert(data);
+					alert(result.error);
 				}
 			});
 		});

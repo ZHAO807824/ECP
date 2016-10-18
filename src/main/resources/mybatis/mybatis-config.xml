@@ -11,6 +11,7 @@
 
 	<typeAliases>
 		<package name="com.ecp.entity.admin"/>
+		<package name="com.ecp.entity.home"/>
 	</typeAliases>
 
 </configuration>
