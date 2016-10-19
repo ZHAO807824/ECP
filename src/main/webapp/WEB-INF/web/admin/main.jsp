@@ -15,100 +15,43 @@
 <script type="text/javascript" src="${ctx}/admin/js/jQuery.easyui.js"></script>
 
 <script type="text/javascript" src='${ctx}/admin/js/outlook2.js'>
-	
 </script>
 
 <script type="text/javascript">
 	var _menus = {
 		"menus" : [ {
-			"menuid" : "1",
-			"icon" : "icon-sys",
-			"menuname" : "系统管理",
-			"menus" : [ {
-				"menuname" : "菜单管理",
-				"icon" : "icon-nav",
-				"url" : "http://www.16sucai.com"
-			}, {
-				"menuname" : "添加用户",
-				"icon" : "icon-add",
-				"url" : "demo.html"
-			}, {
-				"menuname" : "用户管理",
-				"icon" : "icon-users",
-				"url" : "demo2.html"
-			}, {
-				"menuname" : "角色管理",
-				"icon" : "icon-role",
-				"url" : "demo2.html"
-			}, {
-				"menuname" : "权限设置",
-				"icon" : "icon-set",
-				"url" : "demo.html"
-			}, {
-				"menuname" : "系统日志",
-				"icon" : "icon-log",
-				"url" : "demo.html"
-			} ]
-		}, {
 			"menuid" : "8",
 			"icon" : "icon-sys",
-			"menuname" : "员工管理",
-			"menus" : [ {
-				"menuname" : "员工列表",
-				"icon" : "icon-nav",
-				"url" : "demo.html"
-			}, {
-				"menuname" : "视频监控",
-				"icon" : "icon-nav",
-				"url" : "demo1.html"
-			} ]
+			"menuname" : "用户管理",
+			"menus" : [
+				{
+					"menuname" : "用户列表",
+					"icon" : "icon-nav",
+					"url" : "demo.html"
+				}
+			]
 		}, {
 			"menuid" : "56",
 			"icon" : "icon-sys",
-			"menuname" : "部门管理",
-			"menus" : [ {
-				"menuname" : "添加部门",
-				"icon" : "icon-nav",
-				"url" : "demo1.html"
-			}, {
-				"menuname" : "部门列表",
-				"icon" : "icon-nav",
-				"url" : "demo2.html"
-			} ]
-		}, {
-			"menuid" : "28",
-			"icon" : "icon-sys",
-			"menuname" : "财务管理",
-			"menus" : [ {
-				"menuname" : "收支分类",
-				"icon" : "icon-nav",
-				"url" : "demo.html"
-			}, {
-				"menuname" : "报表统计",
-				"icon" : "icon-nav",
-				"url" : "demo1.html"
-			}, {
-				"menuname" : "添加支出",
-				"icon" : "icon-nav",
-				"url" : "demo.html"
-			} ]
-		}, {
+			"menuname" : "订单管理",
+			"menus" : [
+			 	{
+					"menuname" : "订单列表",
+					"icon" : "icon-nav",
+					"url" : "demo1.html"
+				}
+			]
+		},  {
 			"menuid" : "39",
 			"icon" : "icon-sys",
 			"menuname" : "商城管理",
-			"menus" : [ {
-				"menuname" : "商品分",
-				"icon" : "icon-nav",
-				"url" : "/shop/productcatagory.aspx"
-			}, {
-				"menuname" : "商品列表",
-				"icon" : "icon-nav",
-				"url" : "/shop/product.aspx"
-			}, {
-				"menuname" : "商品订单",
-				"icon" : "icon-nav",
-				"url" : "/shop/orders.aspx"
-			} ]
+			"menus" : [
+			 	{
+					"menuname" : "商品列表",
+					"icon" : "icon-nav",
+					"url" : "/shop/product.aspx"
+				}
+			]
 		} ]
 	};
 	//设置登录窗口
@@ -147,9 +90,15 @@
 			return false;
 		}
 
-		$.post('/ajax/editpassword.ashx?newpass=' + $newpass.val(), function(
-				msg) {
-			msgShow('系统提示', '恭喜，密码修改成功！<br>您的新密码为：' + msg, 'info');
+		var admin={"password":$newpass.val()};
+		var url="${ctx}/admin/password";
+		$.post(url,admin, function(data) {
+			var result=eval("("+data+")");
+			if(result.success==true){
+				msgShow('系统提示', '恭喜，密码修改成功！', 'info');
+			}else{
+				msgShow('系统提示', result.error, 'info');
+			}
 			$newpass.val('');
 			$rePass.val('');
 			close();
@@ -168,12 +117,16 @@
 		$('#btnEp').click(function() {
 			serverLogin();
 		})
+		
+		$('#btnCl').click(function(){
+			close();
+		})
 
 		$('#loginOut').click(function() {
 			$.messager.confirm('系统提示', '您确定要退出本次登录吗?', function(r) {
 
 				if (r) {
-					location.href = '/ajax/loginout.ashx';
+					location.href = '${ctx}/admin/logout';
 				}
 			});
 
@@ -193,14 +146,14 @@
 	<div region="north" split="true" border="false"
 		style="overflow: hidden; height: 30px; background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%; line-height: 20px; color: #fff; font-family: Verdana, 微软雅黑, 黑体">
 		<span style="float: right; padding-right: 20px;" class="head">欢迎
-			16素材 <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut">安全退出</a>
+			E-Commerce Platform <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut">安全退出</a>
 		</span> <span style="padding-left: 10px; font-size: 16px;"><img
 			src="images/blocks.gif" width="20" height="20" align="absmiddle" />
-			16素材网 www.16sucai.com</span>
+			E-Commerce Platform</span>
 	</div>
 	<div region="south" split="true"
 		style="height: 30px; background: #D2E0F2;">
-		<div class="footer">By 疯狂秀才 Email:bjhxl@59ibox.cn</div>
+		<div class="footer"><a h>https://github.com/ZHAO807824/ECP</a></div>
 	</div>
 	<div region="west" split="true" title="导航菜单" style="width: 180px;"
 		id="west">
@@ -215,7 +168,7 @@
 		<div id="tabs" class="easyui-tabs" fit="true" border="false">
 			<div title="欢迎使用" style="padding: 20px; overflow: hidden;" id="home">
 
-				<h1>Welcome to jQuery UI!</h1>
+				<h1>Welcome to E-Commerce Platform!</h1>
 
 			</div>
 		</div>
@@ -243,8 +196,9 @@
 			<div region="south" border="false"
 				style="text-align: right; height: 30px; line-height: 30px;">
 				<a id="btnEp" class="easyui-linkbutton" icon="icon-ok"
-					href="javascript:void(0)"> 确定</a> <a class="easyui-linkbutton"
-					icon="icon-cancel" href="javascript:void(0)" onclick="closeLogin()">取消</a>
+					href="javascript:void(0)"> 确定</a> 
+				<a id="btnCl" class="easyui-linkbutton"
+					icon="icon-cancel" href="javascript:void(0)">取消</a>
 			</div>
 		</div>
 	</div>
