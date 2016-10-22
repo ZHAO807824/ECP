@@ -12,13 +12,20 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ecp.dto.Result;
 import com.ecp.entity.admin.Admin;
+import com.ecp.entity.home.Buyer;
+import com.ecp.entity.home.Seller;
 import com.ecp.service.admin.IAdminService;
+import com.ecp.service.home.IUserService;
+import com.github.pagehelper.PageInfo;
 
 @Controller
 public class AdminController {
 
 	@Autowired
 	private IAdminService adminService;
+
+	@Autowired
+	private IUserService userService;
 
 	/**
 	 * 管理员登录页
@@ -79,9 +86,33 @@ public class AdminController {
 	/**
 	 * 用户列表
 	 */
-	@RequestMapping(value = "/admin/users", method = RequestMethod.GET)
-	public ModelAndView users() {
-		return null;
+	@RequestMapping(value = "/admin/buyers", method = RequestMethod.GET)
+	public String buyers() {
+		return "/home/buyers";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/admin/buyers/page", method = RequestMethod.GET)
+	public Result<PageInfo<Buyer>> buyers(@RequestParam("pageNo") Integer pageNo,
+			@RequestParam("pageSize") Integer pageSize) {
+		PageInfo<Buyer> pageInfo = userService.queryByPage("0", 1, 10);
+		return new Result<PageInfo<Buyer>>(true, pageInfo);
+	}
+
+	/**
+	 * 商家列表
+	 */
+	@RequestMapping(value = "/admin/sellers", method = RequestMethod.GET)
+	public String sellers() {
+		return "/home/sellers";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/admin/sellers", method = RequestMethod.POST)
+	public Result<PageInfo<Seller>> sellers(@RequestParam("pageNo") Integer pageNo,
+			@RequestParam("pageSize") Integer pageSize) {
+		PageInfo<Seller> pageInfo = userService.queryByPage("1", 1, 10);
+		return new Result<PageInfo<Seller>>(true, pageInfo);
 	}
 
 	/**

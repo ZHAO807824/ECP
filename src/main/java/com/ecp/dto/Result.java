@@ -22,6 +22,11 @@ public class Result<T> {
 		this.success = success;
 		this.error = error;
 	}
+	
+	public Result(boolean success, T data) {
+		this.success = success;
+		this.data = data;
+	}
 
 	public Result(boolean success, T data, String error) {
 		this.success = success;

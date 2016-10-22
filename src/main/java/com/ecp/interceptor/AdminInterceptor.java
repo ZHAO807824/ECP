@@ -27,8 +27,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 			throws Exception {
 		// 处理不拦截的资源
 		String uri = request.getRequestURI();
-		System.out.println(uri);
-		if (uri.startsWith("/admin")) {
+		if (uri.startsWith("/ECP/admin")) {
 			for (String url : urls) {
 				if (uri.equals(url)) {
 					return true;
@@ -47,12 +46,10 @@ public class AdminInterceptor implements HandlerInterceptor {
 
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
-		System.out.println("post........");
 	}
 
 	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
-		System.out.println("after..........");
 	}
 
 	public void setUrls(List<String> urls) {

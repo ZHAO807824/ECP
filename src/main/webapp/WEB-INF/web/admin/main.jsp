@@ -27,7 +27,12 @@
 				{
 					"menuname" : "用户列表",
 					"icon" : "icon-nav",
-					"url" : "demo.html"
+					"url" : "buyers"
+				},
+				{
+					"menuname" : "商家列表",
+					"icon" : "icon-nav",
+					"url" : "sellers"
 				}
 			]
 		}, {
@@ -38,7 +43,7 @@
 			 	{
 					"menuname" : "订单列表",
 					"icon" : "icon-nav",
-					"url" : "demo1.html"
+					"url" : "orders"
 				}
 			]
 		},  {
@@ -49,7 +54,7 @@
 			 	{
 					"menuname" : "商品列表",
 					"icon" : "icon-nav",
-					"url" : "/shop/product.aspx"
+					"url" : "projects"
 				}
 			]
 		} ]
