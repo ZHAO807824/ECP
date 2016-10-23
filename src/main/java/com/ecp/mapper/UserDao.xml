@@ -29,7 +29,7 @@
 	</select>
 	
 	<select id="getSellers" resultType="Seller">
-		select * from buyer
+		select * from seller
 	</select>
 
 </mapper>

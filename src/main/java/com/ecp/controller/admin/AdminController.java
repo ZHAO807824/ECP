@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ecp.dto.Page;
 import com.ecp.dto.Result;
 import com.ecp.entity.admin.Admin;
 import com.ecp.entity.home.Buyer;
@@ -88,15 +89,15 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/admin/buyers", method = RequestMethod.GET)
 	public String buyers() {
-		return "/home/buyers";
+		return "/admin/buyers";
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/admin/buyers/page", method = RequestMethod.GET)
-	public Result<PageInfo<Buyer>> buyers(@RequestParam("pageNo") Integer pageNo,
-			@RequestParam("pageSize") Integer pageSize) {
-		PageInfo<Buyer> pageInfo = userService.queryByPage("0", 1, 10);
-		return new Result<PageInfo<Buyer>>(true, pageInfo);
+	@RequestMapping(value = "/admin/buyers", method = RequestMethod.POST)
+	public Page<Buyer> buyers(@RequestParam(value = "page", required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(value = "rows", required = false, defaultValue = "10") Integer pageSize) {
+		PageInfo<Buyer> pageInfo = userService.queryByPage("0", pageNo, pageSize);
+		return new Page<Buyer>(pageInfo.getList(), pageInfo.getTotal());
 	}
 
 	/**
@@ -104,15 +105,15 @@ public class AdminController {
 	 */
 	@RequestMapping(value = "/admin/sellers", method = RequestMethod.GET)
 	public String sellers() {
-		return "/home/sellers";
+		return "/admin/sellers";
 	}
 
 	@ResponseBody
 	@RequestMapping(value = "/admin/sellers", method = RequestMethod.POST)
-	public Result<PageInfo<Seller>> sellers(@RequestParam("pageNo") Integer pageNo,
-			@RequestParam("pageSize") Integer pageSize) {
-		PageInfo<Seller> pageInfo = userService.queryByPage("1", 1, 10);
-		return new Result<PageInfo<Seller>>(true, pageInfo);
+	public Page<Seller> sellers(@RequestParam(value = "page", required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(value = "rows", required = false, defaultValue = "10") Integer pageSize) {
+		PageInfo<Seller> pageInfo = userService.queryByPage("1", pageNo, pageSize);
+		return new Page<Seller>(pageInfo.getList(), pageInfo.getTotal());
 	}
 
 	/**
