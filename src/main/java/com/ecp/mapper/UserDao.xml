@@ -27,9 +27,34 @@
 	<select id="getBuyers" resultType="Buyer">
 		select * from buyer
 	</select>
-	
+
 	<select id="getSellers" resultType="Seller">
 		select * from seller
+	</select>
+
+	<select id="getGoods" resultType="Goods">
+		select * from goods
+	</select>
+	
+	<select id="getGoodsById" resultType="Goods"> 
+		select * from goods where id=#{id}	
+	</select>
+
+	<insert id="insertCart">
+		insert into cart(buyer_id,good_id)
+		values(#{buyerId},#{goodId})
+	</insert>
+	
+	<insert id="addCart">
+		update cart set number=#{number} where id=#{id}
+	</insert>
+	
+	<select id="getCart" resultType="Cart">
+		select * from cart where buyer_id=#{buyerId} and good_id=#{goodId}
+	</select>
+	
+	<select id="getCarts" resultType="Cart">
+		select * from cart
 	</select>
 
 </mapper>

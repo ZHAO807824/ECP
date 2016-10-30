@@ -21,8 +21,7 @@
 				<ul>
 					<li class="selected"><a href="index.html">home</a></li>
 					<li><a href="about.html">about us</a></li>
-					<li><a href="category.html">pets</a></li>
-					<li><a href="specials.html">specials pets</a></li>
+					<li><a href="${ctx}/pets">pets</a></li>
 					<li><a href="${ctx}/login">my accout</a></li>
 					<c:if test="${buyer==null&&seller==null}">
 						<li><a href="${ctx}/register">register</a></li>
@@ -162,7 +161,7 @@
 					<div class="home_cart_content">
 						3 x items | <span class="red">TOTAL: 100$</span>
 					</div>
-					<a href="cart.html" class="view_cart">view cart</a>
+					<a href="${ctx}/cart" class="view_cart">view cart</a>
 
 				</div>
 

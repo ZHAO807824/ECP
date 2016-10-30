@@ -14,6 +14,7 @@ import com.ecp.dto.Page;
 import com.ecp.dto.Result;
 import com.ecp.entity.admin.Admin;
 import com.ecp.entity.home.Buyer;
+import com.ecp.entity.home.Goods;
 import com.ecp.entity.home.Seller;
 import com.ecp.service.admin.IAdminService;
 import com.ecp.service.home.IUserService;
@@ -125,10 +126,18 @@ public class AdminController {
 	}
 
 	/**
-	 * 产品列表
+	 * 商品列表
 	 */
-	@RequestMapping(value = "/admin/projects", method = RequestMethod.GET)
-	public ModelAndView projects() {
-		return null;
+	@RequestMapping(value = "/admin/goods", method = RequestMethod.GET)
+	public String goods() {
+		return "/admin/goods";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/admin/goods", method = RequestMethod.POST)
+	public Page<Goods> goods(@RequestParam(value = "page", required = false, defaultValue = "1") Integer pageNo,
+			@RequestParam(value = "rows", required = false, defaultValue = "10") Integer pageSize) {
+		PageInfo<Goods> pageInfo = userService.queryGoodsByPage(pageNo, pageSize);
+		return new Page<Goods>(pageInfo.getList(), pageInfo.getTotal());
 	}
 }

@@ -42,14 +42,14 @@
 
 		<div class="header">
 			<div class="logo">
-				<a href="index.html"><img src="${ctx}/home/images/logo.gif"
+				<a href="${ctx}"><img src="${ctx}/home/images/logo.gif"
 					alt="" title="" border="0" /></a>
 			</div>
 			<div id="menu">
 				<ul>
 					<li class="selected"><a href="${ctx}">home</a></li>
 					<li><a href="about.html">about us</a></li>
-					<li><a href="category.html">pets</a></li>
+					<li><a href="${ctx}/pets">pets</a></li>
 					<li><a href="specials.html">specials pets</a></li>
 					<li><a href="${ctx}/login">my accout</a></li>
 					<c:if test="${buyer==null&&seller==null}">

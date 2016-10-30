@@ -54,7 +54,7 @@
 			 	{
 					"menuname" : "商品列表",
 					"icon" : "icon-nav",
-					"url" : "projects"
+					"url" : "goods"
 				}
 			]
 		} ]

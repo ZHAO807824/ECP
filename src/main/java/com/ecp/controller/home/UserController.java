@@ -1,16 +1,22 @@
 package com.ecp.controller.home;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.ecp.dto.Project;
 import com.ecp.dto.Result;
 import com.ecp.entity.home.Buyer;
+import com.ecp.entity.home.Goods;
 import com.ecp.entity.home.Seller;
 import com.ecp.service.home.IUserService;
 
@@ -97,5 +103,68 @@ public class UserController {
 			}
 		}
 		return new Result<Object>(false, "注册失败,请稍后重试。");
+	}
+
+	/**
+	 * 宠物列表页
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/pets", method = RequestMethod.GET)
+	public ModelAndView pets() {
+		ModelAndView mav = new ModelAndView("/home/pets");
+		List<Goods> goods = userService.getGoods();
+		mav.addObject("goods", goods);
+		return mav;
+	}
+
+	/**
+	 * 宠物详情页
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "/pet/{id}", method = RequestMethod.GET)
+	public ModelAndView pet(@PathVariable Integer id) {
+		ModelAndView mav = new ModelAndView("/home/pet");
+		mav.addObject("goods", userService.getGoods(id));
+		return mav;
+	}
+
+	/**
+	 * 加入购物车
+	 * 
+	 * @param googdId
+	 * @param session
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/cart", method = RequestMethod.POST)
+	public Result<Object> cart(@RequestParam(value = "goodId", required = true) Integer goodId, HttpSession session) {
+		Buyer buyer = (Buyer) session.getAttribute("buyer");
+		if (buyer != null && buyer.getId() != null) {
+			if (userService.addCart(buyer.getId(), goodId)) {
+				return new Result<Object>(true, "加入购物车成功.可前往购物车查看详情.");
+			}
+		}
+		return new Result<Object>(false, "加入购物车失败,请稍后重试...");
+	}
+
+	/**
+	 * 购物车信息
+	 * 
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value = "/cart", method = RequestMethod.GET)
+	public ModelAndView cart(HttpSession session) {
+		ModelAndView mav = new ModelAndView("/home/cart");
+		Buyer buyer = (Buyer) session.getAttribute("buyer");
+		if (buyer != null && buyer.getId() > 0) {
+			List<Project> projects = userService.getCart(buyer.getId());
+			if (projects != null && projects.size() > 0) {
+				mav.addObject("projects", projects);
+			}
+		}
+		return mav;
 	}
 }

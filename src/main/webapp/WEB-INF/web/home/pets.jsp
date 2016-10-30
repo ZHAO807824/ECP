@@ -10,46 +10,36 @@
 <link rel="stylesheet" type="text/css" href="${ctx}/home/css/style.css" />
 <script type="text/javascript" src="${ctx}/home/js/jquery.js"></script>
 <script type="text/javascript">
-	/* 注册  */
-	function regis(){
-		console.log("fadf");
-		var name = $("#name").val();
-		var password = $("#password").val();
-		var email = $("#email").val();
-		var phone = $("#phone").val();
-		var company = $("#company").val();
-		var address = $("#address").val();
-		var role = $('input:radio:checked').val();
-		var url = "${ctx}/register";
-		var user = {
-			"name" : name,
-			"password" : password,
-			"email" : email,
-			"phone" : phone,
-			"company" : company,
-			"address" : address,
-			"role" : role
+	/* 登录页   */
+	function login() {
+		window.location.href="${ctx}/login";
+	}
+	
+	/* 加入购物车 */
+	function cart(goodId){
+		var url = "${ctx}/cart";
+		var good = {
+			"goodId" : goodId,
 		};
-		console.log(user);
-		$.post(url, user, function(data) {
+		$.post(url, good, function(data) {
 			var result = eval("(" + data + ")");
-			console.log(result);
-			if (result.success == true) {
-				window.location.href="${ctx}/login";
-			} else {
-				alert(result.error);
-			}
-		}); 
+			alert(result.error);
+		});
+	}
+	
+	/* 跳转到详情页 */
+	function pet(id){
+		var url="${ctx}/pet/"+id;
+		window.open(url);
 	}
 </script>
-
 </head>
 <body>
 	<div id="wrap">
 
 		<div class="header">
 			<div class="logo">
-				<a href="index.html"><img src="${ctx}/home/images/logo.gif"
+				<a href="${ctx}"><img src="${ctx}/home/images/logo.gif"
 					alt="" title="" border="0" /></a>
 			</div>
 			<div id="menu">
@@ -72,78 +62,42 @@
 
 		<div class="center_content">
 			<div class="left_content">
-				<div class="title">
-					<span class="title_icon"><img
-						src="${ctx}/home/images/bullet1.gif" alt="" title="" /></span>Register
-				</div>
-
-				<div class="feat_prod_box_details">
-					<p class="details">Lorem ipsum dolor sit amet, consectetur
-						adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-						dolore magna aliqua. Ut enim ad minim veniam, quis nostrud. Lorem
-						ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-						minim veniam, quis nostrud.</p>
-
-					<div class="contact_form">
-						<div class="form_subtitle">create new account</div>
-						<form name="register">
-							<div class="form_row">
-								<label class="contact"><strong>Username:</strong></label> <input
-									id="name" name="name" type="text" class="contact_input" />
-							</div>
-
-
-							<div class="form_row">
-								<label class="contact"><strong>Password:</strong></label> <input
-									id="password" name="password" type="password"
-									class="contact_input" />
-							</div>
-
-							<div class="form_row">
-								<label class="contact"><strong>Email:</strong></label> <input
-									id="email" name="email" type="text" class="contact_input" />
-							</div>
-
-
-							<div class="form_row">
-								<label class="contact"><strong>Phone:</strong></label> <input
-									id="phone" name="phone" type="text" class="contact_input" />
-							</div>
-
-							<div class="form_row">
-								<label class="contact"><strong>Company:</strong></label> <input
-									id="company" name="company" type="text" class="contact_input" />
-							</div>
-
-							<div class="form_row">
-								<label class="contact"><strong>Address:</strong></label> <input
-									id="address" name="address" type="text" class="contact_input" />
-							</div>
-
-							<div class="form_row">
-								<div class="terms">
-									<input type="radio" name="role" checked value="0" />&nbsp;用户
-									&nbsp;&nbsp; <input type="radio" name="role" value="1" />&nbsp;商家
-								</div>
-							</div>
-
-
-							<div class="form_row">
-								<input type="button" class="register" value="register"
-									onclick="regis()" />
-							</div>
-						</form>
-					</div>
-
-				</div>
-
-
-
-
-
-
-				<div class="clear"></div>
+				<!-- 列表 -->
+				<table>
+					<tr style="width:100%">
+						<td style="width:60%">图片</td>
+						<td style="width:10%">名称</td>
+						<td style="width:10%">价格</td>
+						<td style="width:20%">操作</td>
+					</tr>
+					<c:forEach var="good" items="${goods}">
+						<tr style="width:100%">
+							<td style="width:60%">
+								<img alt="暂无图片资源" src="${ctx}/home/img/${good.img}" onclick="pet('${good.id}')">
+							</td>
+							<td style="width:10%">
+								${good.name}
+							</td>
+							<td style="width:10%">
+								${good.price}
+							</td>
+							<td style="width:20%">
+								<c:if test="${buyer!=null}">
+									<button onclick="cart('${good.id}')">购物车</button>
+									<br/>
+									<button>购买</button>
+								</c:if>
+								<c:if test="${buyer==null}">
+									<button onclick="login()">购物车</button>
+									<br/>
+									<button onclick="login()">购买</button>
+								</c:if>
+								
+								
+							</td>
+						</tr>
+					</c:forEach>
+				</table>
 			</div>
 			<!--end of left content-->
 

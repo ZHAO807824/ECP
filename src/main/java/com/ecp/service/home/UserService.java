@@ -1,5 +1,6 @@
 package com.ecp.service.home;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,7 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.ecp.dao.home.IUserDao;
+import com.ecp.dto.Project;
 import com.ecp.entity.home.Buyer;
+import com.ecp.entity.home.Cart;
+import com.ecp.entity.home.Goods;
 import com.ecp.entity.home.Seller;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -92,4 +96,62 @@ public class UserService implements IUserService {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> PageInfo<T> queryGoodsByPage(Integer pageNo, Integer pageSize) {
+		pageNo = pageNo == null ? 1 : pageNo;
+		pageSize = pageSize == null ? 10 : pageSize;
+		PageHelper.startPage(pageNo, pageSize);
+		List<Goods> list = userDao.getGoods();
+		// 用PageInfo对结果进行包装
+		PageInfo<Goods> pageInfo = new PageInfo<Goods>(list);
+		return (PageInfo<T>) pageInfo;
+	}
+
+	public List<Goods> getGoods() {
+		return userDao.getGoods();
+	}
+
+	public boolean addCart(Integer buyerId, Integer goodId) {
+		if (buyerId != null && goodId != null) {
+			try {
+				// 先判断在购物车中是否有其存在,如果有,数量加1
+				Cart cart = null;
+				try {
+					cart = userDao.getCart(buyerId, goodId);
+				} catch (Exception e) {
+				}
+				if (cart != null && cart.getNumber() != 0) {
+					Integer number = cart.getNumber() + 1;
+					userDao.addCart(cart.getId(), number);
+				} else {
+					userDao.insertCart(buyerId, goodId);
+				}
+				return true;
+			} catch (Exception e) {
+				LOGGER.info("UserService addCart," + e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	public List<Project> getCart(Integer buyerId) {
+		List<Cart> carts = userDao.getCarts();
+		List<Project> list = new ArrayList<Project>();
+		if (carts != null && carts.size() > 0) {
+			for (Cart cart : carts) {
+				Project project = new Project(cart);
+				// 根据goodId获取商品名称
+				Goods good = userDao.getGoodsById(cart.getGoodId());
+				project.setName(good.getName());
+				project.setPrice(good.getPrice());
+				list.add(project);
+			}
+		}
+		return list;
+	}
+
+	public Goods getGoods(Integer id) {
+		return userDao.getGoodsById(id);
+	}
 }
